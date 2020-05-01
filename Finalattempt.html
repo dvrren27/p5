@@ -1,0 +1,111 @@
+<html>
+  <head>
+  
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js">
+	
+	</script>
+	
+	<meta charset='utf-8'>
+	
+  </head>
+  
+  
+  <body>
+ 
+ <script>
+
+
+let circlePath = [];
+let trianglePath = [];
+let spacing = 10;
+let theta = 0;
+let valueX; 
+let valueY;
+
+function object(a, angle) {
+  return createVector(a * cos(angle), a * sin(angle));
+}
+
+function setup() {
+  createCanvas(1850, 700);
+  angleMode(DEGREES);
+  let radius = 100;
+  let startA = 0;
+  let endA = 120;
+  let start = object(radius, startA);
+  let end = object(radius, endA);
+  for (let a = startA; a < 360; a += spacing) {
+    let cv = object(radius, a);
+    circlePath.push(cv);
+    let amt = (a % 120) / (endA - startA);
+    let tv = p5.Vector.lerp(start, end, amt);
+    trianglePath.push(tv);
+
+    if ((a + spacing) % 120 === 0) {
+      startA = startA + 120;
+      endA = endA + 120;
+      start = object(radius, startA);
+      end = object(radius, endA);
+    }
+  }
+}
+
+function draw() {
+  background(500);
+  translate(width / 2, height / 2);
+  rotate(30);
+  stroke(0);
+  strokeWeight(4);
+  noFill();
+  let amt = (sin(theta) + 1) / 2;
+  theta += 5;
+  beginShape();
+  for (let i = 0; i < circlePath.length; i++) {
+    let cv = circlePath[i];
+    let tv = trianglePath[i];
+    let x = lerp(cv.x, tv.x, amt);
+    let y = lerp(cv.y, tv.y, amt);
+    vertex(x, y);
+	
+fill(random(255), random(255), random(255));
+  }
+  endShape(CLOSE);
+
+ function mouseClicked() { 
+    valueX = mouseX%255; 
+    valueY = mouseY%255; 
+} 
+  // beginShape();
+  // for (let i = 0; i < circlePath.length; i++) {
+  //   let v = circlePath[i];
+  //   vertex(v.x, v.y);
+  // }
+  // endShape(CLOSE);
+  // beginShape();
+  // for (let i = 0; i < trianglePath.length; i++) {
+  //   let v = trianglePath[i];
+  //   vertex(v.x, v.y);
+  // }
+  // endShape(CLOSE);
+
+  // for (let i = 0; i < trianglePath.length; i++) {
+  //   let v = trianglePath[i];
+  //   fill(0);
+  //   ellipse(v.x, v.y, 8);
+  // }
+}
+
+
+
+</script>
+ 
+ 
+ 
+ 
+  
+  </body>
+  
+  
+  
+  
+</html>
